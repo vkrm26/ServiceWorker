@@ -1,6 +1,6 @@
 package `in`.softcrunch.serviceworker
 
-interface Task<Any> {
-    fun onExecuteTask(): Any
-    fun onTaskComplete(t : Any)
+interface Task<T> {
+    fun onExecuteTask(): T
+    fun onTaskComplete(t : T)
 }

@@ -1,9 +1,9 @@
 package `in`.softcrunch.serviceworker
 
-import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import java.util.concurrent.Executors
 
 class ServiceWorker(val name : String) {
@@ -16,21 +16,19 @@ class ServiceWorker(val name : String) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if (msg.obj != null) {
-                var pair = msg.obj as Pair<Any, Any>
-
-                (pair.first as Task<Any>).onTaskComplete(pair.second)
+                var pair = msg.obj as TaskResult<Any>
+                pair.task.onTaskComplete(pair.result)
             }
         }
 
     }
 
-    fun addTask(task: Task<Bitmap>) {
+    fun <T> addTask(task: Task<T>) {
         threadPoolExecutor.execute {
+            Log.d("App" , name + " --- executing request....")
             var result = task.onExecuteTask()
-
-            var message = Message()
-            message.obj = task
-            handler.obtainMessage(1, Pair(task, result)).sendToTarget()
+            handler.obtainMessage(1, TaskResult(task, result)).sendToTarget()
+            Log.d("App" , name + " --- executing response....")
         }
     }
 

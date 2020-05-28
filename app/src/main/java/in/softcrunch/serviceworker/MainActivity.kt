@@ -22,11 +22,48 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var serviceWorker1 = ServiceWorker("first")
+        var serviceWorker2 = ServiceWorker("second")
 
 
         button1.setOnClickListener {
-            var serviceWorker = ServiceWorker("first")
-            serviceWorker.addTask(object : Task<Bitmap> {
+            serviceWorker1.addTask(object : Task<Bitmap> {
+                override fun onExecuteTask(): Bitmap {
+                    val request = Request.Builder().url(IMAGE_1).build()
+                    val response = OkHttpClient().newCall(request).execute()
+                    return BitmapFactory.decodeStream(response.body?.byteStream())
+                }
+
+                override fun onTaskComplete(bitmap : Bitmap) {
+                    img1.setImageBitmap(bitmap)
+                }
+            })
+
+            serviceWorker1.addTask(object : Task<Bitmap> {
+                override fun onExecuteTask(): Bitmap {
+                    val request = Request.Builder().url(IMAGE_1).build()
+                    val response = OkHttpClient().newCall(request).execute()
+                    return BitmapFactory.decodeStream(response.body?.byteStream())
+                }
+
+                override fun onTaskComplete(bitmap : Bitmap) {
+                    img1.setImageBitmap(bitmap)
+                }
+            })
+
+            serviceWorker1.addTask(object : Task<Bitmap> {
+                override fun onExecuteTask(): Bitmap {
+                    val request = Request.Builder().url(IMAGE_1).build()
+                    val response = OkHttpClient().newCall(request).execute()
+                    return BitmapFactory.decodeStream(response.body?.byteStream())
+                }
+
+                override fun onTaskComplete(bitmap : Bitmap) {
+                    img1.setImageBitmap(bitmap)
+                }
+            })
+
+            serviceWorker1.addTask(object : Task<Bitmap> {
                 override fun onExecuteTask(): Bitmap {
                     val request = Request.Builder().url(IMAGE_1).build()
                     val response = OkHttpClient().newCall(request).execute()
@@ -40,8 +77,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         button2.setOnClickListener {
-            var serviceWorker = ServiceWorker("second")
-            serviceWorker.addTask(object : Task<Bitmap> {
+            serviceWorker2.addTask(object : Task<Bitmap> {
                 override fun onExecuteTask(): Bitmap {
                     val request = Request.Builder().url(IMAGE_2).build()
                     val response = OkHttpClient().newCall(request).execute()
